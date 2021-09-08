@@ -37,11 +37,11 @@ Django Crash Course's code developed for my YouTube Channel
 4. Install the Dependencies
 
 ```bash
-#pipenv
-pipenv install
+  #pipenv
+  pipenv install
 
-# pip and venv
-pip install -r requirements.txt
+  # pip and venv
+  pip install -r requirements.txt
 ```
 
 6. Start the app
