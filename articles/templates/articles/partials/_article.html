@@ -1,0 +1,14 @@
+<div class="card border-primary mb-3 shadow">
+  <div class="card-header">Published {{ article.created_at | timesince }}</div>
+  <div class="card-body">
+    <h4 class="card-title">
+      <a
+        href="{% url 'articles:details' article.id %}"
+        class="text-decoration-none"
+      >
+        {{ article.title }}
+      </a>
+    </h4>
+    <p class="card-text text-muted">{{ article.excerpt }}</p>
+  </div>
+</div>

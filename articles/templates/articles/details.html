@@ -1,0 +1,19 @@
+{% extends 'articles/base.html' %} {% block content %}
+
+<h1 class="mb-3">{{ article.title }}</h1>
+
+<h6 class="text-muted mb-3">{{ article.excerpt }}</h6>
+
+<p class="lead">{{ article.content }}</p>
+
+<a href="{% url 'articles:update' article.id %}" class="btn btn-info btn-lg"
+  >Edit</a
+>
+
+<a
+  href="{% url 'articles:delete' article.id %}"
+  class="btn btn-danger btn-lg ms-3"
+  >Delete</a
+>
+
+{% endblock content %}

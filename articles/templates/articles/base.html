@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="{% static 'articles/bootstrap.min.css' %}"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <title>
+      {% if title %} BlogBro - {{ title }} {% else %} BlogBro {% endif %}
+    </title>
+  </head>
+  <body>
+    {% include 'articles/partials/_header.html' %}
+    <main class="container">
+      <section>{% block content %}{% endblock content %}</section>
+    </main>
+  </body>
+</html>
