@@ -5,7 +5,7 @@
   {% csrf_token %}
   <button type="submit" class="btn btn-danger">Yes, Delete</button>
   <a
-    href="{% url 'articles:details' article.id %}"
+    href="{% url 'articles:detail' article.id %}"
     class="btn btn-secondary"
     class="ms-3"
     >Cancel</a

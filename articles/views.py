@@ -1,19 +1,18 @@
 from django.shortcuts import redirect, render
-from django.urls import reverse
 
 from .forms import ArticleForm
 from .models import Article
 
 
-def articles_index(request):
+def article_list(request):
     articles = Article.objects.all()
-    return render(request, 'articles/index.html', {'articles': articles})
+    return render(request, 'articles/article_list.html', {'articles': articles})
 
 
-def article_details(request, id):
-    article = Article.objects.get(pk=id)
+def article_detail(request, pk):
+    article = Article.objects.get(pk=pk)
     context = {'article': article, 'title': article.title}
-    return render(request, 'articles/details.html', context)
+    return render(request, 'articles/article_detail.html', context)
 
 
 def article_create(request):
@@ -22,18 +21,18 @@ def article_create(request):
         form = ArticleForm(request.POST)
         if form.is_valid():
             article = form.save()
-            return redirect(reverse('articles:details', args=[article.id]))
+            return redirect('articles:detail', pk=article.id)
     context = {'form': form, 'title': 'New Article'}
-    return render(request, 'articles/form.html', context)
+    return render(request, 'articles/article_form.html', context)
 
 
-def article_update(request, id):
-    article = Article.objects.get(pk=id)
+def article_update(request, pk):
+    article = Article.objects.get(pk=pk)
     if request.method == 'POST':
         form = ArticleForm(request.POST, instance=article)
         if form.is_valid():
             form.save()
-            return redirect(reverse('articles:details', args=[article.id]))
+            return redirect('articles:detail', pk=article.id)
     else:
         form = ArticleForm(instance=article)
     context = {
@@ -41,19 +40,19 @@ def article_update(request, id):
         'article': article,
         'title': f'Update {article.title}'
     }
-    return render(request, 'articles/form.html', context)
+    return render(request, 'articles/article_form.html', context)
 
 
-def article_delete(request, id):
-    article = Article.objects.get(pk=id)
+def article_delete(request, pk):
+    article = Article.objects.get(pk=pk)
     if request.method == 'POST':
         article.delete()
-        return redirect(reverse('articles:index'))
+        return redirect('articles:list')
     context = {
         'article': article,
         'title': f'Delete {article.title}'
     }
-    return render(request, 'articles/confirm_delete.html', context)
+    return render(request, 'articles/article_confirm_delete.html', context)
 
 
 def about(request):
