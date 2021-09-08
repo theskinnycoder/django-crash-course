@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
     'articles.apps.ArticlesConfig',
     'crispy_forms',
 ]
@@ -115,6 +116,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = 'articles:list'
+LOGOUT_REDIRECT_URL = 'articles:list'
+LOGIN_URL = 'login'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/

@@ -1,5 +1,11 @@
 <div class="card border-primary mb-3 shadow">
-  <div class="card-header">Published {{ article.created_at | timesince }}</div>
+  <div class="card-header">
+    <h6 class="text-muted pt-2">
+      Published by {{article.author.username}},
+      <!---->
+      about {{ article.created_at | timesince }} ago
+    </h6>
+  </div>
   <div class="card-body">
     <h4 class="card-title">
       <a
