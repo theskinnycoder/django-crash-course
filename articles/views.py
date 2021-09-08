@@ -1,60 +1,57 @@
-from django.shortcuts import redirect, render
-from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views.generic.base import TemplateView
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic.list import ListView
 
-from .forms import ArticleForm
 from .models import Article
 
 
-def articles_index(request):
-    articles = Article.objects.all()
-    return render(request, 'articles/index.html', {'articles': articles})
+class ArticleListView(ListView):
+    model = Article
+    context_object_name = 'articles'
+    ordering = ['-created_at']
 
 
-def article_details(request, id):
-    article = Article.objects.get(pk=id)
-    context = {'article': article, 'title': article.title}
-    return render(request, 'articles/details.html', context)
+class ArticleDetailView(DetailView):
+    model = Article
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.object.title
+        return context
 
 
-def article_create(request):
-    form = ArticleForm()
-    if request.method == 'POST':
-        form = ArticleForm(request.POST)
-        if form.is_valid():
-            article = form.save()
-            return redirect(reverse('articles:details', args=[article.id]))
-    context = {'form': form, 'title': 'New Article'}
-    return render(request, 'articles/form.html', context)
+class ArticleCreateView(CreateView):
+    model = Article
+    fields = ['title', 'excerpt', 'content']
+
+    def get_success_url(self):
+        return reverse_lazy('articles:detail', kwargs={'pk': self.object.id})
 
 
-def article_update(request, id):
-    article = Article.objects.get(pk=id)
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
-        if form.is_valid():
-            form.save()
-            return redirect(reverse('articles:details', args=[article.id]))
-    else:
-        form = ArticleForm(instance=article)
-    context = {
-        'form': form,
-        'article': article,
-        'title': f'Update {article.title}'
-    }
-    return render(request, 'articles/form.html', context)
+class ArticleUpdateView(UpdateView):
+    model = Article
+    fields = ['title', 'excerpt', 'content']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Update {self.object.title}'
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy('articles:detail', kwargs={'pk': self.object.id})
 
 
-def article_delete(request, id):
-    article = Article.objects.get(pk=id)
-    if request.method == 'POST':
-        article.delete()
-        return redirect(reverse('articles:index'))
-    context = {
-        'article': article,
-        'title': f'Delete {article.title}'
-    }
-    return render(request, 'articles/confirm_delete.html', context)
+class ArticleDeleteView(DeleteView):
+    model = Article
+    success_url = reverse_lazy('articles:list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Delete {self.object.title}'
+        return context
 
 
-def about(request):
-    return render(request, 'articles/about.html', {'title': 'About'})
+class AboutView(TemplateView):
+    template_name = 'articles/about.html'

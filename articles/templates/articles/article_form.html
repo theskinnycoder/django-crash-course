@@ -13,7 +13,7 @@
   <fieldset class="form-group mb-5 shadow-lg p-5">
     <legend class="border-bottom pb-2 mb-4 text-center">
       <h2>
-        {% if article %}Update {{ article.title }} {% else %}Create new
+        {% if article %}Update {{ article.title }} {% else %}Create New
         Article{% endif %}
       </h2>
     </legend>
@@ -27,7 +27,7 @@
       {% if article %}Update{% else %}Submit{% endif %}
     </button>
 
-    <a href="{% url 'articles:index' %}" class="btn btn-outline-secondary ms-3"
+    <a href="{% url 'articles:list' %}" class="btn btn-outline-secondary ms-3"
       >Cancel</a
     >
   </fieldset>
