@@ -18,6 +18,7 @@
       <li class="nav-item">
         <a class="nav-link" href="{% url 'articles:about' %}">About</a>
       </li>
+      {% if user.is_authenticated %}
       <li class="nav-item">
         <a
           class="btn btn-dark nav-link text-white ms-2"
@@ -25,6 +26,20 @@
           >New Article</a
         >
       </li>
+      <li class="nav-item">
+        <a class="nav-link ms-2" href="{% url 'logout' %}"
+          >Logout, {{user.username}}</a
+        >
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a
+          class="btn btn-dark nav-link text-white ms-2"
+          href="{% url 'login' %}"
+          >Login/SignUp</a
+        >
+      </li>
+      {% endif %}
     </ul>
   </div>
 </nav>

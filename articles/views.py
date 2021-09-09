@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic.base import TemplateView
 from django.views.generic.detail import DetailView
@@ -22,15 +23,19 @@ class ArticleDetailView(DetailView):
         return context
 
 
-class ArticleCreateView(CreateView):
+class ArticleCreateView(LoginRequiredMixin, CreateView):
     model = Article
     fields = ['title', 'excerpt', 'content']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse_lazy('articles:detail', kwargs={'pk': self.object.id})
 
 
-class ArticleUpdateView(UpdateView):
+class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
     fields = ['title', 'excerpt', 'content']
 
@@ -39,11 +44,15 @@ class ArticleUpdateView(UpdateView):
         context['title'] = f'Update {self.object.title}'
         return context
 
+    def test_func(self):
+        article = self.get_object()
+        return self.request.user == article.author
+
     def get_success_url(self):
         return reverse_lazy('articles:detail', kwargs={'pk': self.object.id})
 
 
-class ArticleDeleteView(DeleteView):
+class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Article
     success_url = reverse_lazy('articles:list')
 
@@ -51,6 +60,10 @@ class ArticleDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context['title'] = f'Delete {self.object.title}'
         return context
+
+    def test_func(self):
+        article = self.get_object()
+        return self.request.user == article.author
 
 
 class AboutView(TemplateView):

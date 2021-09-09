@@ -1,19 +1,28 @@
 {% extends 'articles/base.html' %} {% block content %}
+<article class="col-10 mx-auto p-5 shadow-lg mb-5">
+  <h1 class="mb-2 text-center">{{ article.title }}</h1>
+  <h6 class="text-muted mb-3 text-center">{{ article.excerpt }}</h6>
 
-<h1 class="mb-3">{{ article.title }}</h1>
+  <div class="text-black d-flex justify-content-center align-items-center">
+    <h6>Published {{article.created_at | timesince}} ago</h6>
+    <h6 class="mx-3">.</h6>
+    <h6>Article by {{article.author.username}}</h6>
+  </div>
 
-<h6 class="text-muted mb-3">{{ article.excerpt }}</h6>
+  <p class="lead col-10 mx-auto">{{ article.content }}</p>
 
-<p class="lead">{{ article.content }}</p>
+  {% if user and user == article.author %}
+  <div class="d-flex justify-content-center align-items-center">
+    <a href="{% url 'articles:update' article.id %}" class="btn btn-info btn-lg"
+      >Edit</a
+    >
 
-<a href="{% url 'articles:update' article.id %}" class="btn btn-info btn-lg"
-  >Edit</a
->
-
-<a
-  href="{% url 'articles:delete' article.id %}"
-  class="btn btn-danger btn-lg ms-3"
-  >Delete</a
->
-
+    <a
+      href="{% url 'articles:delete' article.id %}"
+      class="btn btn-danger btn-lg ms-3"
+      >Delete</a
+    >
+  </div>
+  {% endif %}
+</article>
 {% endblock content %}
