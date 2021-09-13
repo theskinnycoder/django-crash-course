@@ -1,9 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.views.generic.base import TemplateView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
-from django.views.generic.list import ListView
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  TemplateView, UpdateView)
 
 from .models import Article
 
@@ -16,11 +14,7 @@ class ArticleListView(ListView):
 
 class ArticleDetailView(DetailView):
     model = Article
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = self.object.title
-        return context
+    context_object_name = 'article'
 
 
 class ArticleCreateView(LoginRequiredMixin, CreateView):
@@ -31,35 +25,21 @@ class ArticleCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
-    def get_success_url(self):
-        return reverse_lazy('articles:detail', kwargs={'pk': self.object.id})
-
 
 class ArticleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Article
     fields = ['title', 'excerpt', 'content']
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = f'Update {self.object.title}'
-        return context
+    context_object_name = 'article'
 
     def test_func(self):
         article = self.get_object()
         return self.request.user == article.author
 
-    def get_success_url(self):
-        return reverse_lazy('articles:detail', kwargs={'pk': self.object.id})
-
 
 class ArticleDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Article
     success_url = reverse_lazy('articles:list')
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['title'] = f'Delete {self.object.title}'
-        return context
+    context_object_name = 'article'
 
     def test_func(self):
         article = self.get_object()

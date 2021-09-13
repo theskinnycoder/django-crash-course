@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 {% load static %}
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -11,13 +11,16 @@
       crossorigin="anonymous"
     />
     <title>
-      {% if title %} BlogBro - {{ title }} {% else %} BlogBro {% endif %}
+      BlogBro | {% block title %}{% endblock title %}
     </title>
   </head>
   <body>
     {% include 'articles/partials/_header.html' %}
     <main class="container">
-      <section>{% block content %}{% endblock content %}</section>
+      <section>
+        {% block content %}
+        {% endblock content %}
+      </section>
     </main>
   </body>
 </html>

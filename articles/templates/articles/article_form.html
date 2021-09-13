@@ -1,39 +1,64 @@
-{% extends 'articles/base.html' %} {% load crispy_forms_tags %}
+{% extends 'articles/base.html' %}
 
-<!---->
+{% load crispy_forms_tags %}
+
+{% block title %}
+  {% if article %}
+    Update {{ article.title }}
+  {% else %}
+    Create New Article
+  {% endif %}
+{% endblock title %}
 
 {% block content%}
 
-<form
-  action="{% if article %}{% url 'articles:update' article.id %}{% else %}{% url 'articles:create' %}{% endif %}"
-  method="POST"
-  class="mx-auto col-6"
->
-  {% csrf_token %}
-  <fieldset class="form-group mb-5 shadow-lg p-5">
-    <legend class="border-bottom pb-2 mb-4 text-center">
-      <h2>
-        {% if article %}Update {{ article.title }} {% else %}Create new
-        Article{% endif %}
-      </h2>
-    </legend>
-    <div class="mb-3">{{ form.title | as_crispy_field }}</div>
+  <form
+    action="
+      {% if article %}
+        {% url 'articles:update' article.id %}
+      {% else %}
+        {% url 'articles:create' %}
+      {% endif %}"
+    method="POST"
+    class="mx-auto col-8"
+  >
+    {% csrf_token %}
+    <fieldset class="form-group mb-5 shadow-lg p-5">
+      <legend class="border-bottom pb-2 mb-4 text-center">
+        <h2>
+          {% if article %}
+            Update {{ article.title }}
+          {% else %}
+            Create New Article
+          {% endif %}
+        </h2>
+      </legend>
+      <div class="mb-3">{{ form.title | as_crispy_field }}</div>
 
-    <div class="mb-3">{{ form.excerpt | as_crispy_field }}</div>
+      <div class="mb-3">{{ form.excerpt | as_crispy_field }}</div>
 
-    <div class="mb-3">{{ form.content | as_crispy_field }}</div>
+      <div class="mb-3">{{ form.content | as_crispy_field }}</div>
 
-    <div class="d-flex justify-content-center align-items-center">
-      <button type="submit" class="btn btn-success">
-        {% if article %}Update{% else %}Submit{% endif %}
-      </button>
+      <div class="d-flex justify-content-center align-items-center">
+        <button type="submit" class="btn btn-success">
+          {% if article %}
+            Update
+          {% else %}
+            Submit
+          {% endif %}
+        </button>
 
-      <a
-        href="{% if article %}{% url 'articles:detail' article.id %}{% else %}{% url 'articles:list' %}{% endif %}"
-        class="btn btn-outline-secondary ms-3"
-        >Cancel</a
-      >
-    </div>
-  </fieldset>
-</form>
+        <a
+          href="
+            {% if article %}
+              {% url 'articles:detail' article.id %}
+            {% else %}
+              {% url 'articles:list' %}
+            {% endif %}"
+          class="btn btn-outline-secondary ms-3"
+          >Cancel</a
+        >
+      </div>
+    </fieldset>
+  </form>
 {% endblock content %}
