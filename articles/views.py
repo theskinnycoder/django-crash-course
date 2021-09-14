@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
@@ -34,6 +35,8 @@ def article_create(request):
 def article_update(request, pk):
     article = Article.objects.get(pk=pk)
     if article.author != request.user:
+        messages.warning(
+            request, f"You aren't the author of this post. You can't update it.")
         return redirect('articles:detail', pk=pk)
     if request.method == 'POST':
         form = ArticleForm(request.POST, instance=article)
@@ -54,6 +57,8 @@ def article_update(request, pk):
 def article_delete(request, pk):
     article = Article.objects.get(pk=pk)
     if article.author != request.user:
+        messages.warning(
+            request, f"You aren't the author of this post. You can't delete it.")
         return redirect('articles:detail', pk=pk)
     if request.method == 'POST':
         article.delete()
