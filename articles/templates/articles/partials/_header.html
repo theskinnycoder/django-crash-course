@@ -8,9 +8,12 @@
   "
 >
   <div class="container">
-    <a class="navbar-brand" href="{% url 'articles:list' %}"
-      ><h3>BlogBro</h3></a
+    <a
+      class="navbar-brand"
+      href="{% url 'articles:list' %}"
     >
+      <h3>BlogBro</h3>
+    </a>
     <ul class="navbar-nav ms-auto">
       <li class="nav-item">
         <a class="nav-link" href="{% url 'articles:list' %}">Home</a>
@@ -23,8 +26,7 @@
         <a
           class="btn btn-dark nav-link text-white ms-2"
           href="{% url 'articles:create' %}"
-          >New Article</a
-        >
+        >New Article</a>
       </li>
       <li class="nav-item">
         <a class="nav-link ms-2" href="{% url 'logout' %}"

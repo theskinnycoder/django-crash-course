@@ -16,4 +16,21 @@
     >
   </form>
 
+{% block title %}
+  Delete {{article.title}}
+{% endblock title %}
+
+{% block content %}
+  <h1 class="mb-3">{{ article.title }}</h1>
+  <h6 class="text-muted mb-3">Are you sure you want to delete this article?</h6>
+  <form action="{% url 'articles:delete' article.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a
+      href="{% url 'articles:detail' article.id %}"
+      class="btn btn-secondary"
+      class="ms-3"
+      >Cancel</a
+    >
+  </form>
 {% endblock content %}

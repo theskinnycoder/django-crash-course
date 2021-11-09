@@ -11,9 +11,7 @@
       <a
         href="{% url 'articles:detail' article.id %}"
         class="text-decoration-none"
-      >
-        {{ article.title }}
-      </a>
+      >{{ article.title }}</a>
     </h4>
     <p class="card-text text-muted">{{ article.excerpt }}</p>
   </div>

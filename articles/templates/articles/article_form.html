@@ -11,6 +11,42 @@
 {% endblock title %}
 
 {% block content%}
+  <form
+    action="
+      {% if article %}
+        {% url 'articles:update' article.id %}
+      {% else %}
+        {% url 'articles:create' %}
+      {% endif %}
+    "
+    method="POST"
+    class="mx-auto col-6"
+  >
+    {% csrf_token %}
+    <fieldset class="form-group mb-5 shadow-lg p-5">
+      <legend class="border-bottom pb-2 mb-4 text-center">
+        <h2>
+          {% if article %}
+            Update {{ article.title }}
+          {% else %}
+            Create new Article
+          {% endif %}
+        </h2>
+      </legend>
+      <div class="mb-3">{{ form.title | as_crispy_field }}</div>
+
+      <div class="mb-3">{{ form.excerpt | as_crispy_field }}</div>
+
+      <div class="mb-3">{{ form.content | as_crispy_field }}</div>
+
+      <div class="d-flex justify-content-center align-items-center">
+        <button type="submit" class="btn btn-success">
+          {% if article %}
+            Update
+          {% else %}
+            Submit
+          {% endif %}
+        </button>
 
   <form
     action="
