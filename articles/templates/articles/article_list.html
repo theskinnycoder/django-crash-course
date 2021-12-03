@@ -1,7 +1,12 @@
-{% extends 'articles/base.html' %} {% block content %}
-<h1 class="mb-3">All Articles</h1>
-{% for article in articles %}
-<div class="col-md-6">
-  {% include 'articles/partials/_article.html' with article=article %}
-</div>
-{% endfor %} {% endblock content %}
+{% extends 'articles/base.html' %}
+
+{% block content %}
+
+  <h1 class="mb-3">All Articles</h1>
+  {% for article in articles %}
+  <div class="col-md-6">
+    {% include 'articles/partials/_article.html' with article=article %}
+  </div>
+  {% endfor %}
+
+{% endblock content %}
